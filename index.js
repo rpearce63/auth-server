@@ -6,8 +6,8 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const os = require("os");
-console.log("temp dir: ", os.tmpdir);
+//const os = require("os");
+//console.log("temp dir: ", os.tmpdir);
 app.use(morgan("dev")); // log every request to the console
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: "true" })); // parse application/x-www-form-urlencoded
