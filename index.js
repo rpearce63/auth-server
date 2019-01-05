@@ -6,7 +6,8 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-
+const os = require("os");
+console.log("temp dir: ", os.tmpdir);
 app.use(morgan("dev")); // log every request to the console
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: "true" })); // parse application/x-www-form-urlencoded
@@ -15,20 +16,23 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" })); // parse applica
 
 require("./router")(app);
 mockgoose.helper.setDbVersion("3.2.1");
-//mockgoose.prepareStorage().then(function() {
-console.log("getting connection");
-// mongoose connection
-mongoose.connect(
-  "mongodb://rpearce63:5778o62%40Ml@ds133570.mlab.com:33570/auth-tutorial",
-  { useNewUrlParser: true }
-);
-app.listen("3090", function(err) {
-  if (err) throw err;
-  console.log("App listening on port " + "3090");
+mockgoose.prepareStorage().then(function() {
+  console.log("setting up mockgoose connection");
+  // mongoose connection
+  mongoose
+    .connect(
+      "mongodb://rpearce63:5778o62%40Ml@ds133570.mlab.com:33570/auth-tutorial",
+      { useNewUrlParser: true }
+    )
+    .then(() => {
+      console.log("Mongoose default connection open to mongodb");
+    })
+    .catch(err => {
+      console.log(err);
+      throw err;
+    });
+  app.listen("3090", function(err) {
+    if (err) throw err;
+    console.log("App listening on port " + "3090");
+  });
 });
-mongoose.connection.on("connected", function() {
-  console.log(
-    "Mongoose default connection open to " + "mongodb://localhost/auth"
-  );
-});
-//});
