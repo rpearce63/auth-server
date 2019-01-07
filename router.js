@@ -1,5 +1,9 @@
 const Authentication = require("./controllers/authentication");
-const passportService = require("./services/passport");
+// imported just to make sure the code gets executed.  jwt and local login
+// strategies are set into passport at the bottom of passportService.
+// They then referenced below when setting authenticate middlware 'requireAuth'
+// and 'requireSignin'.
+require("./services/passport");
 const passport = require("passport");
 
 const reqiureAuth = passport.authenticate("jwt", { session: false });
